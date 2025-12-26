@@ -30,6 +30,7 @@ export default function MapView() {
     const [position, setPosition] = useState<LatLngExpression>([40.4168, -3.7038]); // Madrid default
     const [userLocation, setUserLocation] = useState<LatLngExpression | null>(null);
     const [coords, setCoords] = useState<{ lat: number; lng: number } | null>(null);
+    const [mapReady, setMapReady] = useState(false);
 
     useEffect(() => {
         if (navigator.geolocation) {
@@ -46,6 +47,13 @@ export default function MapView() {
                 }
             );
         }
+
+        // Delay loading heavy components to prevent blank screen (50ms)
+        const timer = setTimeout(() => {
+            setMapReady(true);
+        }, 50);
+
+        return () => clearTimeout(timer);
     }, []);
 
     return (
@@ -62,9 +70,13 @@ export default function MapView() {
                 />
                 <MapController center={position} />
                 <SearchControl />
-                <POILayers />
-                <RouteEditor />
-                <SavedRoutesDrawer />
+                {mapReady && (
+                    <>
+                        <POILayers />
+                        <RouteEditor />
+                        <SavedRoutesDrawer />
+                    </>
+                )}
 
                 {userLocation && (
                     <Marker position={userLocation}>

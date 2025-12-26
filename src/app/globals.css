@@ -65,3 +65,46 @@ button {
   border-radius: 3px;
 }
 
+/* Marker Cluster Styles */
+.custom-marker-cluster {
+  background: transparent;
+}
+
+.cluster-icon {
+  background: rgba(59, 130, 246, 0.6);
+  border: 3px solid rgba(59, 130, 246, 0.9);
+  border-radius: 50%;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  font-size: 14px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  transition: transform 0.2s ease;
+}
+
+.cluster-icon:hover {
+  transform: scale(1.1);
+}
+
+.cluster-small {
+  width: 40px;
+  height: 40px;
+  background: rgba(34, 197, 94, 0.6);
+  border-color: rgba(34, 197, 94, 0.9);
+}
+
+.cluster-medium {
+  width: 50px;
+  height: 50px;
+  background: rgba(251, 146, 60, 0.6);
+  border-color: rgba(251, 146, 60, 0.9);
+}
+
+.cluster-large {
+  width: 60px;
+  height: 60px;
+  background: rgba(239, 68, 68, 0.6);
+  border-color: rgba(239, 68, 68, 0.9);
+}
