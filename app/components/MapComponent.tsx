@@ -63,9 +63,12 @@ function useOrientation(map: any) {
   const rotationRef = useRef(0);
 
   const handleOrientation = (event: DeviceOrientationEvent) => {
-    if (event.webkitCompassHeading) {
+    // Type assertion for iOS webkit property
+    const webkitEvent = event as DeviceOrientationEvent & { webkitCompassHeading?: number };
+
+    if (webkitEvent.webkitCompassHeading !== undefined) {
       // iOS
-      rotationRef.current = event.webkitCompassHeading;
+      rotationRef.current = webkitEvent.webkitCompassHeading;
     } else if (event.alpha !== null) {
       // Android y otros
       let alpha = event.alpha!;
@@ -78,7 +81,7 @@ function useOrientation(map: any) {
   };
 
   const startTracking = () => {
-    if (typeof DeviceOrientationEvent !== 'undefined' && typeof DeviceOrientationEvent.requestPermission === 'function') {
+    if (typeof DeviceOrientationEvent !== 'undefined' && typeof (DeviceOrientationEvent as any).requestPermission === 'function') {
       // iOS 13+
       (DeviceOrientationEvent as any).requestPermission()
         .then((permissionState: string) => {
