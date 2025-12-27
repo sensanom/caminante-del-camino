@@ -25,17 +25,12 @@ export function haversineDistance(coords: [number, number][]) {
         const lat2 = coords[i + 1][0];
         const lon2 = coords[i + 1][1];
 
-        const phi1 = toRad(lat1);
-        const phi2 = toRad(lat2);
-        const dPhi = toRad(lat2 - lat1);
-        const dLambda = toRad(lon2 - lon1);
-
-        const a = Math.sin(dPhi / 2) * Math.sin(dPhi / 2) +
-            Math.cos(phi1) * Math.cos(phi2) *
-            Math.sin(dLambda / 2) * Math.sin(dLambda / 2);
+        const dLat = toRad(lat2 - lat1);
+        const dLon = toRad(lon2 - lon1);
+        const a = Math.sin(dLat / 2) ** 2 + Math.cos(toRad(lat1)) * Math.cos(toRad(lat2)) * Math.sin(dLon / 2) ** 2;
         const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-
-        totalDist += R * c;
+        const distance = R * c;
+        totalDist += distance;
     }
     return totalDist;
 }
