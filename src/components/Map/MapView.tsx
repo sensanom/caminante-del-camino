@@ -5,7 +5,6 @@ import { MapContainer, TileLayer, Marker, Polyline, useMap } from 'react-leaflet
 import 'leaflet/dist/leaflet.css';
 import { haversineDistance } from '@/lib/geo';
 
-// Componente para dibujar ruta manual
 function DrawModeHandler({ points, setPoints }: { points: [number, number][], setPoints: (p: [number, number][]) => void }) {
   const map = useMap();
 
@@ -20,7 +19,6 @@ function DrawModeHandler({ points, setPoints }: { points: [number, number][], se
   return <Polyline positions={points} color="blue" />;
 }
 
-// Componente principal
 export default function MapView() {
   const [start, setStart] = useState<[number, number] | null>(null);
   const [end, setEnd] = useState<[number, number] | null>(null);
@@ -29,7 +27,6 @@ export default function MapView() {
   const [drawPoints, setDrawPoints] = useState<[number, number][]>([]);
   const [transportMode, setTransportMode] = useState<'walk' | 'bike' | 'car'>('walk');
 
-  // Calcular distancia entre inicio y fin
   useEffect(() => {
     if (start && end) {
       const dist = haversineDistance(start[0], start[1], end[0], end[1]);
@@ -39,7 +36,6 @@ export default function MapView() {
     }
   }, [start, end]);
 
-  // Reset al cambiar de modo
   const toggleDrawMode = () => {
     setDrawMode(!drawMode);
     if (!drawMode) {
@@ -58,8 +54,7 @@ export default function MapView() {
   };
 
   return (
-    <div style={{ position: 'relative', height: '100vh', width: '100%' }}>
-      {/* Barra de control */}
+    <div style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, overflow: 'hidden' }}>
       <div
         style={{
           position: 'absolute',
@@ -153,7 +148,6 @@ export default function MapView() {
         </button>
       </div>
 
-      {/* Mostrar distancia */}
       {(distance !== null || drawPoints.length > 1) && (
         <div
           style={{
@@ -180,7 +174,6 @@ export default function MapView() {
         </div>
       )}
 
-      {/* Mapa */}
       <MapContainer
         center={[40.4168, -3.7038]}
         zoom={6}
@@ -189,10 +182,8 @@ export default function MapView() {
         <TileLayer
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
-        {/* Modo normal: dos marcadores */}
         {!drawMode && start && <Marker position={start} />}
         {!drawMode && end && <Marker position={end} />}
-        {/* Modo dibujo: ruta libre */}
         {drawMode && <DrawModeHandler points={drawPoints} setPoints={setDrawPoints} />}
       </MapContainer>
     </div>
